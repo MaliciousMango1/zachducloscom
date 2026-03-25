@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zachary Duclos — Systems Administrator</title>
+  <meta name="description" content="Zachary Duclos — Systems Administrator at the University of Georgia and owner of ZMD Tech, Athens GA.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script defer src="https://analytics.zmdtech.net/script.js" data-website-id="f4b97c41-717d-4a18-89f1-57ce895b4e71"></script>
+  <style>
+
+/* ============================================================
+   RESET & TOKENS
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #08080a;
+  --bg-card:    #0f0f12;
+  --bg-hover:   #16161a;
+  --border:     rgba(255,255,255,0.07);
+  --border-mid: rgba(255,255,255,0.12);
+  --text:       #f4f4f5;
+  --muted:      #71717a;
+  --subtle:     #3f3f46;
+  --accent:     #60a5fa;
+  --accent-2:   #a78bfa;
+
+  --font: 'Outfit', system-ui, sans-serif;
+  --max: 980px;
+  --pad: clamp(1.25rem, 5vw, 2.5rem);
+  --radius: 14px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ============================================================
+   BACKGROUND ORBS
+   ============================================================ */
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.045;
+}
+
+.orb-1 {
+  width: 600px; height: 600px;
+  background: var(--accent);
+  top: -150px; left: -120px;
+  animation: driftA 22s ease-in-out infinite alternate;
+}
+
+.orb-2 {
+  width: 500px; height: 500px;
+  background: var(--accent-2);
+  bottom: -80px; right: -100px;
+  animation: driftB 28s ease-in-out infinite alternate;
+}
+
+.orb-3 {
+  width: 300px; height: 300px;
+  background: var(--accent);
+  top: 50%; left: 55%;
+  transform: translate(-50%, -50%);
+  opacity: 0.025;
+  animation: driftC 18s ease-in-out infinite alternate;
+}
+
+@keyframes driftA {
+  to { transform: translate(80px, 120px) scale(1.15); }
+}
+@keyframes driftB {
+  to { transform: translate(-60px, -80px) scale(1.1); }
+}
+@keyframes driftC {
+  to { transform: translate(-50%, -60%) scale(1.4); }
+}
+
+nav, .hero, .section, hr, footer { position: relative; z-index: 1; }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem var(--pad);
+  background: rgba(8,8,10,0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 0.15rem;
+}
+
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 0.4rem 0.9rem;
+  border-radius: 7px;
+  transition: color 0.15s, background 0.15s;
+  display: block;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 101;
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 8rem var(--pad) 5rem;
+}
+
+.hero-inner { max-width: 620px; }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(96,165,250,0.07);
+  border: 1px solid rgba(96,165,250,0.18);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroIn 0.6s 0.05s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: blink 2.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent); }
+  50%       { opacity: 0.25; box-shadow: none; }
+}
+
+h1 {
+  font-size: clamp(2.6rem, 7vw, 4.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: heroIn 0.75s 0.18s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.name-accent {
+  background: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-quote {
+  font-size: clamp(0.88rem, 1.4vw, 0.98rem);
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--subtle);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: heroIn 0.75s 0.32s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: heroIn 0.75s 0.44s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+@keyframes heroIn {
+  to { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  border-radius: 9px;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s, border-color 0.18s, color 0.18s;
+  cursor: pointer;
+  border: none;
+  letter-spacing: -0.01em;
+}
+
+.btn-primary { background: var(--accent); color: #000; }
+.btn-primary:hover {
+  background: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(96,165,250,0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover {
+  color: var(--text);
+  border-color: var(--border-mid);
+  background: rgba(255,255,255,0.03);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.divider {
+  max-width: var(--max);
+  margin: 0 auto;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.section {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(4rem, 8vw, 7rem) var(--pad);
+}
+
+.section-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 0.85rem;
+}
+
+.section-sub {
+  color: var(--muted);
+  font-size: 0.93rem;
+  max-width: 500px;
+  margin-bottom: 2.75rem;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.about-body p {
+  color: var(--muted);
+  font-size: 0.93rem;
+  font-weight: 300;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.about-body p strong { color: var(--text); font-weight: 600; }
+
+.about-body a {
+  color: var(--accent);
+  border-bottom: 1px solid rgba(96,165,250,0.25);
+  transition: border-color 0.15s;
+}
+
+.about-body a:hover { border-color: var(--accent); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.75rem;
+}
+
+.chip {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.28rem 0.7rem;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.chip:hover { border-color: var(--border-mid); color: var(--text); }
+
+.about-stats {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.stat {
+  background: var(--bg-card);
+  padding: 1.4rem 1.6rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.18s;
+}
+
+.stat:last-child { border-bottom: none; }
+.stat:hover { background: var(--bg-hover); }
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+.stat-value span { color: var(--accent); }
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.project-card:hover {
+  border-color: rgba(96,165,250,0.22);
+  background: var(--bg-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(96,165,250,0.05);
+}
+
+.project-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.project-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: rgba(96,165,250,0.08);
+  border: 1px solid rgba(96,165,250,0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+.card-link {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.card-link:hover { color: var(--accent); border-color: rgba(96,165,250,0.2); }
+
+.project-card h3 {
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.project-card p {
+  font-size: 0.84rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.65;
+  flex: 1;
+}
+
+.proj-tags {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  padding-top: 0.35rem;
+}
+
+.proj-tag {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(96,165,250,0.06);
+  color: #93c5fd;
+  border: 1px solid rgba(96,165,250,0.12);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 1.5rem var(--pad);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.73rem;
+  color: var(--muted);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+footer a { color: var(--muted); transition: color 0.15s; }
+footer a:hover { color: var(--text); }
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+              transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,10,0.97);
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    z-index: 99;
+  }
+  .nav-links.open a { font-size: 1.1rem; padding: 0.6rem 1.2rem; }
+  .hamburger { display: flex; }
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .projects-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; align-items: center; }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND ORBS -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Zachary <span>Duclos</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Systems Administrator · Athens, GA</div>
+      <h1>Hey, I'm<br><span class="name-accent">Zachary Duclos.</span></h1>
+      <p class="hero-quote">"This is my website, there are many others like it — but this one is mine."</p>
+      <div class="hero-cta">
+        <a href="#about" class="btn btn-primary">About me</a>
+        <a href="https://zmdtech.net" target="_blank" rel="noopener" class="btn btn-outline">ZMD Tech ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="section-label reveal">About</div>
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <h2 class="section-title">Sysadmin by day.<br>Tinkerer by night.</h2>
+        <p>I'm a Systems Administrator at the <strong>University of Georgia</strong>, where I keep infrastructure running, networks healthy, and technology out of people's way.</p>
+        <p>I also run <strong><a href="https://zmdtech.net" target="_blank" rel="noopener">ZMD Tech</a></strong> — a locally-owned tech services company in Athens, GA. We offer website building &amp; hosting, invoice software hosting, and in-person house calls for anyone who just needs things to work.</p>
+        <p>I'm a big believer in self-hosting, owning your stack, and keeping things simple. This site runs on my own hardware.</p>
+        <div class="chips">
+          <span class="chip">Linux</span>
+          <span class="chip">Debian</span>
+          <span class="chip">Docker</span>
+          <span class="chip">Networking</span>
+          <span class="chip">Cloudflare</span>
+          <span class="chip">Windows Server</span>
+          <span class="chip">Self-hosting</span>
+        </div>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat">
+          <div class="stat-value">UGA<span>.</span></div>
+          <div class="stat-label">Systems Administrator<br>University of Georgia</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">ZMD<span>.</span></div>
+          <div class="stat-label">Owner — ZMD Tech<br>Local IT services, Athens GA</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">24<span>/7</span></div>
+          <div class="stat-label">Uptime obsessed<br>Self-hosted, always on</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">ATH<span>.</span></div>
+          <div class="stat-label">Based in Athens, Georgia</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="section-label reveal">Projects</div>
+    <h2 class="section-title reveal">Things I've built.</h2>
+    <p class="section-sub reveal">A mix of personal projects, homelab setups, and things I run myself.</p>
+
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-icon">🏠</div>
+        </div>
+        <h3>This Website</h3>
+        <p>A static personal site — pure HTML, CSS, and JS. No framework, no build step. Deployed to Cloudflare Pages.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">HTML/CSS</span>
+          <span class="proj-tag">Cloudflare Pages</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-icon">⚡</div>
+          <a href="https://zmdtech.net" target="_blank" rel="noopener" class="card-link">Visit ↗</a>
+        </div>
+        <h3>ZMD Tech</h3>
+        <p>My independent tech services company. Self-hosted, serving Athens, GA with website hosting, invoice software, and on-site IT support.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Self-hosted</span>
+          <span class="proj-tag">Linux</span>
+          <span class="proj-tag">WordPress</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-icon">🖥</div>
+        </div>
+        <h3>Home Lab</h3>
+        <p>A Debian Linux server running Dockerized services — analytics, hosting, and more — exposed securely via Cloudflare Tunnel.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Debian</span>
+          <span class="proj-tag">Docker</span>
+          <span class="proj-tag">Cloudflare</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-card-top">
+          <div class="project-icon">📊</div>
+        </div>
+        <h3>Self-hosted Analytics</h3>
+        <p>Running Umami for privacy-friendly, cookieless analytics — no Google, full data ownership, deployed on my own hardware.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Umami</span>
+          <span class="proj-tag">Docker</span>
+          <span class="proj-tag">Privacy</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Zachary Duclos</span>
+    <a href="https://zmdtech.net" target="_blank" rel="noopener">zmdtech.net</a>
+  </footer>
+
+  <script>
+    // ============================================================
+    // CURSOR GLOW + PARTICLE TRAIL
+    // ============================================================
+    const canvas = document.createElement('canvas');
+    canvas.id = 'cursor-canvas';
+    Object.assign(canvas.style, {
+      position: 'fixed',
+      inset: '0',
+      zIndex: '9999',
+      pointerEvents: 'none',
+    });
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    let W = canvas.width  = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    });
+
+    // Mouse state
+    let mx = -200, my = -200;
+    let particles = [];
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      spawnParticles(e.clientX, e.clientY);
+    });
+
+    // Hide canvas when mouse leaves window
+    document.addEventListener('mouseleave', () => { mx = -200; my = -200; });
+
+    // Particle colours — blues and purples to match the site palette
+    const COLORS = [
+      'rgba(96,165,250,',   // accent blue
+      'rgba(167,139,250,',  // accent purple
+      'rgba(147,197,253,',  // light blue
+      'rgba(196,181,253,',  // light purple
+      'rgba(255,255,255,',  // white flash
+    ];
+
+    function spawnParticles(x, y) {
+      const count = 3;
+      for (let i = 0; i < count; i++) {
+        const angle  = Math.random() * Math.PI * 2;
+        const speed  = Math.random() * 1.8 + 0.4;
+        const size   = Math.random() * 3.5 + 1;
+        const color  = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const life   = Math.random() * 35 + 25;
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 0.6, // slight upward drift
+          size,
+          color,
+          life,
+          maxLife: life,
+        });
+      }
+    }
+
+    // Glow cursor ring — smooth-follow position
+    let gx = -200, gy = -200;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Smooth glow follows mouse with slight lag
+      gx = lerp(gx, mx, 0.12);
+      gy = lerp(gy, my, 0.12);
+
+      if (mx > 0) {
+        // Outer soft glow
+        const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, 80);
+        grad.addColorStop(0,   'rgba(96,165,250,0.10)');
+        grad.addColorStop(0.4, 'rgba(167,139,250,0.05)');
+        grad.addColorStop(1,   'rgba(0,0,0,0)');
+        ctx.beginPath();
+        ctx.arc(gx, gy, 80, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Inner crisp ring at exact cursor position
+        ctx.beginPath();
+        ctx.arc(mx, my, 5, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(96,165,250,0.8)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Tiny filled dot
+        ctx.beginPath();
+        ctx.arc(mx, my, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.fill();
+      }
+
+      // Update & draw particles
+      particles = particles.filter(p => p.life > 0);
+      for (const p of particles) {
+        const alpha = (p.life / p.maxLife) * 0.75;
+        const size  = p.size * (p.life / p.maxLife);
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + alpha + ')';
+        ctx.fill();
+
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.vy += 0.04; // gentle gravity
+        p.life--;
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    // Hide the default cursor on the page
+    document.documentElement.style.cursor = 'none';
+    // Restore it on interactive elements so people know they can click
+    document.querySelectorAll('a, button').forEach(el => {
+      el.style.cursor = 'pointer';
+    });
+
+    // ============================================================
+    // Mobile nav
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks  = document.querySelector('.nav-links');
+
+    hamburger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Scroll reveal with smart staggering
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter(e => e.isIntersecting);
+      const groups  = new Map();
+
+      visible.forEach(entry => {
+        const parent = entry.target.parentElement;
+        if (!groups.has(parent)) groups.set(parent, []);
+        groups.get(parent).push(entry.target);
+      });
+
+      groups.forEach(siblings => {
+        siblings.forEach((el, i) => {
+          setTimeout(() => {
+            el.classList.add('visible');
+            observer.unobserve(el);
+          }, i * 90);
+        });
+      });
+
+      visible.forEach(entry => {
+        if (!entry.target.classList.contains('visible')) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
